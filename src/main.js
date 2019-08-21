@@ -4,11 +4,14 @@ import {getFilters} from './components/filters';
 import {getTripSorting} from "./components/tripsorting";
 import {getEventsList} from './components/eventslist';
 import {getEventEditing, getEvent} from './components/event';
+import {getEventData} from './components/data';
 
 const renderComponent = function (container, content, position) {
   container.insertAdjacentHTML(position, content);
 };
 
+const events = Array.from({length: 30}, getEventData).sort((first, second) => first.startTime - second.startTime);
+console.log(events);
 const routeContainer = document.querySelector(`.trip-info`);
 const [menuContainer, filtersContainer] = document.querySelectorAll(`.trip-controls h2`);
 const tripEvents = document.querySelector(`.trip-events`);
