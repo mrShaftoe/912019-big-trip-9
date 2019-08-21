@@ -5,13 +5,16 @@ import {getTripSorting} from "./components/tripsorting";
 import {getEventsList} from './components/eventslist';
 import {getEventEditing, getEvent} from './components/event';
 import {getEventData} from './components/data';
+import {groupEventsByDate} from './utils';
 
+const EVENTS_QUANTITY = 4;
 const renderComponent = function (container, content, position) {
   container.insertAdjacentHTML(position, content);
 };
 
-const events = Array.from({length: 30}, getEventData).sort((first, second) => first.startTime - second.startTime);
-console.log(events);
+const events = Array.from({length: EVENTS_QUANTITY}, getEventData).sort((first, second) => first.startTime - second.startTime);
+const eventsByDate = groupEventsByDate(events.slice(1));
+
 const routeContainer = document.querySelector(`.trip-info`);
 const [menuContainer, filtersContainer] = document.querySelectorAll(`.trip-controls h2`);
 const tripEvents = document.querySelector(`.trip-events`);
@@ -20,7 +23,7 @@ renderComponent(routeContainer, getRoute(), `afterbegin`);
 renderComponent(menuContainer, getMenu(), `afterend`);
 renderComponent(filtersContainer, getFilters(), `afterend`);
 renderComponent(tripEvents, getTripSorting(), `beforeend`);
-renderComponent(tripEvents, getEventEditing(), `beforeend`);
+renderComponent(tripEvents, getEventEditing(events[0]), `beforeend`);
 renderComponent(tripEvents, getEventsList(), `beforeend`);
 
 const eventsList = tripEvents.querySelector(`.trip-events__list`);
