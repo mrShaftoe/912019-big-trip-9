@@ -111,4 +111,34 @@ const getRouteData = function (events) {
   };
 };
 
-export {getEventData, getRouteData};
+const getMenuData = function () {
+  return [
+    {
+      name: `table`,
+      isActive: true
+    },
+    {
+      name: `stats`,
+      isActive: false
+    }
+  ];
+};
+
+const getFiltersData = function () {
+  return [
+    {
+      name: `everything`,
+      isChecked: true,
+    },
+    {
+      name: `future`,
+      isChecked: false,
+    },
+    {
+      name: `past`,
+      isChecked: false,
+    }
+  ];
+};
+
+export {getEventData, getRouteData, getMenuData, getFiltersData};

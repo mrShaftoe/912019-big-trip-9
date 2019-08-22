@@ -1,9 +1,16 @@
-const getMenu = function () {
+import {capitalize} from '../utils';
+
+const getMenuItem = function ({name, isActive}) {
+  return `<a class="trip-tabs__btn  ${isActive ? `trip-tabs__btn--active` : ``}" href="#">
+    ${capitalize(name)}
+  </a>`;
+};
+
+const getMenu = function (items) {
   return `
-  <nav class="trip-controls__trip-tabs  trip-tabs">
-    <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
-    <a class="trip-tabs__btn" href="#">Stats</a>
-  </nav>
+    <nav class="trip-controls__trip-tabs  trip-tabs">
+      ${items.map(getMenuItem).join(``)}
+    </nav>
   `;
 };
 

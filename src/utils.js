@@ -38,9 +38,9 @@ const getOnlyDate = function (date) {
 };
 
 const getEventDuration = function (startTime, endTime) {
-  const minutes = (endTime - startTime) / 1000 / 60;
+  const minutes = Math.round((endTime - startTime) / 1000 / 60);
   const hours = Math.floor(minutes / 60);
-  return `${hours}H  ${Math.floor(minutes) - hours * 60}M`;
+  return `${hours}H  ${minutes - hours * 60}M`;
 };
 
 const groupEventsByDate = function (events) {
