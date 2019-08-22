@@ -21,6 +21,7 @@ const EVENT_TYPES = [
   },
   {
     name: `restaurant`,
+    output: `at`,
   },
   {
     name: `ship`,
@@ -79,7 +80,7 @@ const getEventData = function () {
     type: getRandomFromArray(EVENT_TYPES),
     destination: getRandomFromArray(CITIES),
     startTime,
-    endTime: startTime + getRandomInt((2 * MS_IN_HOUR), (-2 * MS_IN_HOUR)),
+    endTime: startTime + getRandomInt((2 * MS_IN_HOUR)),
     price: getRandomInt(101, 10),
     description: Array.from({length: getRandomInt(4)}, () => getRandomFromArray(DESCRIPTIONS)).join(`. `),
     photos: Array.from({length: getRandomInt(5)}, () => `http://picsum.photos/300/150?r=${Math.random()}`),

@@ -27,9 +27,25 @@ const getFormatedDateTime = function (date) {
   return `${getFormatedDate(date, {month: `2-digit`, day: `numeric`, year: `2-digit`})} ${getFormatedTime(date)}`;
 };
 
+const getDatetimeTime = function (time) {
+  const newDate = new Date(time);
+  return `${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDate()}T${newDate.getHours()}:${newDate.getMinutes()}`;
+};
+
+const getOnlyDate = function (date) {
+  const newDate = new Date(date);
+  return new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).valueOf();
+};
+
+const getEventDuration = function (startTime, endTime) {
+  const minutes = (endTime - startTime) / 1000 / 60;
+  const hours = Math.floor(minutes / 60);
+  return `${hours}H  ${Math.floor(minutes) - hours * 60}M`;
+};
+
 const groupEventsByDate = function (events) {
   return events.reduce((acc, it) => {
-    const date = getFormatedDate(it.startTime);
+    const date = getOnlyDate(it.startTime);
     if (!(date in acc)) {
       acc[date] = [];
     }
@@ -42,4 +58,15 @@ const capitalize = function (string) {
   return `${string[0].toUpperCase()}${string.slice(1)}`;
 };
 
-export {getRandomInt, getRandomFromArray, getShuffledArray, getFormatedDate, groupEventsByDate, capitalize, getFormatedDateTime};
+export {
+  getRandomInt,
+  getRandomFromArray,
+  getShuffledArray,
+  getFormatedTime,
+  getFormatedDate,
+  groupEventsByDate,
+  capitalize,
+  getFormatedDateTime,
+  getDatetimeTime,
+  getEventDuration
+};
