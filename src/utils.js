@@ -54,6 +54,13 @@ const groupEventsByDate = function (events) {
   }, {});
 };
 
+const getTripCost = function (events) {
+  return events.reduce((acc, it) => {
+    const offersCost = it.offers.reduce((cost, offer) => offer.checked ? cost + offer.price : cost, 0);
+    return acc + it.price + offersCost;
+  }, 0);
+};
+
 const capitalize = function (string) {
   return `${string[0].toUpperCase()}${string.slice(1)}`;
 };
@@ -68,5 +75,6 @@ export {
   capitalize,
   getFormatedDateTime,
   getDatetimeTime,
-  getEventDuration
+  getEventDuration,
+  getTripCost
 };

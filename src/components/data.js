@@ -1,4 +1,4 @@
-import {getRandomFromArray, getRandomInt, getShuffledArray} from '../utils';
+import {getRandomFromArray, getRandomInt, getShuffledArray, getFormatedDate} from '../utils';
 
 const MS_IN_HOUR = 60 * 60 * 1000;
 const MS_IN_DAY = 24 * MS_IN_HOUR;
@@ -9,7 +9,7 @@ const EVENT_TYPES = [
   },
   {
     name: `check-in`,
-    output: `into`,
+    output: `in`,
   },
   {
     name: `drive`,
@@ -21,7 +21,7 @@ const EVENT_TYPES = [
   },
   {
     name: `restaurant`,
-    output: `at`,
+    output: `in`,
   },
   {
     name: `ship`,
@@ -29,7 +29,7 @@ const EVENT_TYPES = [
   },
   {
     name: `sightseeing`,
-    output: `at`,
+    output: `in`,
   },
   {
     name: `taxi`,
@@ -88,4 +88,27 @@ const getEventData = function () {
   };
 };
 
-export {getEventData};
+const getRouteData = function (events) {
+  const startDate = events[0].startTime;
+  const endDate = events[events.length - 1].endTime;
+  const destinations = events.reduce((acc, {destination}) => {
+    if (acc[acc.length - 1] !== destination) {
+      acc.push(destination);
+    }
+    return acc;
+  }, []);
+
+  return {
+    start: {
+      month: getFormatedDate(startDate, {month: `short`}),
+      day: getFormatedDate(startDate, {day: `2-digit`}),
+    },
+    end: {
+      month: getFormatedDate(endDate, {month: `short`}),
+      day: getFormatedDate(endDate, {day: `2-digit`}),
+    },
+    points: destinations.length > 3 ? [destinations[0], `...`, destinations[destinations.length - 1]] : destinations,
+  };
+};
+
+export {getEventData, getRouteData};
