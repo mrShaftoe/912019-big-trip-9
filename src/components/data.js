@@ -1,4 +1,4 @@
-import {getRandomFromArray, getRandomInt, getShuffledArray, getFormatedDate} from '../utils';
+import {getRandomFromArray, getRandomInt, getShuffledArrayOfObjects, getFormatedDate} from '../utils';
 
 const MS_IN_HOUR = 60 * 60 * 1000;
 const MS_IN_DAY = 24 * MS_IN_HOUR;
@@ -84,7 +84,7 @@ const getEventData = function () {
     price: getRandomInt(101, 10),
     description: Array.from({length: getRandomInt(4)}, () => getRandomFromArray(DESCRIPTIONS)).join(`. `),
     photos: Array.from({length: getRandomInt(5)}, () => `http://picsum.photos/300/150?r=${Math.random()}`),
-    offers: getShuffledArray(OFFERS).slice(0, getRandomInt(3)),
+    offers: getShuffledArrayOfObjects(OFFERS).slice(0, getRandomInt(3)),
   };
 };
 

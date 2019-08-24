@@ -12,7 +12,18 @@ const getShuffledArray = function (arr) {
     const j = getRandomInt(i + 1);
     [shuffled[j], shuffled[i]] = [shuffled[i], shuffled[j]];
   }
-  return (shuffled);
+  return shuffled;
+};
+
+const getShuffledArrayOfObjects = function (arr) {
+  const shuffled = arr.slice();
+  for (let i = shuffled.length - 1; i > 1; i--) {
+    const j = getRandomInt(i + 1);
+    const temp = Object.assign({}, shuffled[j]);
+    shuffled[j] = Object.assign({}, shuffled[i]);
+    shuffled[i] = Object.assign({}, temp);
+  }
+  return shuffled;
 };
 
 const getFormatedDate = function (date, options = {month: `short`, day: `numeric`, year: `2-digit`}) {
@@ -69,6 +80,7 @@ export {
   getRandomInt,
   getRandomFromArray,
   getShuffledArray,
+  getShuffledArrayOfObjects,
   getFormatedTime,
   getFormatedDate,
   groupEventsByDate,
