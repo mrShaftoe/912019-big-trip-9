@@ -74,6 +74,21 @@ const OFFERS = [
   }
 ];
 
+const getSortingItems = function () {
+  return [{
+    name: `event`,
+    isChecked: true,
+  },
+  {
+    name: `time`,
+    isChecked: false,
+  },
+  {
+    name: `price`,
+    isChecked: false,
+  }];
+};
+
 const getEventData = function () {
   const startTime = Date.now() + 1 + getRandomInt(8 * MS_IN_DAY, -7 * MS_IN_DAY);
   return {
@@ -141,4 +156,4 @@ const getFiltersData = function () {
   ];
 };
 
-export {getEventData, getRouteData, getMenuData, getFiltersData};
+export {getEventData, getRouteData, getMenuData, getFiltersData, getSortingItems};

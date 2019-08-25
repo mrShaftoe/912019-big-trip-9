@@ -1,22 +1,32 @@
-import {capitalize} from '../utils';
+import {capitalize, createElement} from '../utils';
 
-const getFilter = function ({name, isChecked}) {
-  return `
-    <div class="trip-filters__filter">
-      <input id="filter-${name}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${name}" ${isChecked ? `checked` : ``}>
-      <label class="trip-filters__filter-label" for="filter-${name}">${capitalize(name)}</label>
-    </div>
-  `;
-};
+class Filter {
+  constructor({name, isChecked}) {
+    this._name = name;
+    this._isChecked = isChecked;
+    this._element = null;
+  }
 
-const getFilters = function (filters) {
-  return `
-  <form class="trip-filters" action="#" method="get">
-    ${filters.map(getFilter).join(``)}
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
 
-    <button class="visually-hidden" type="submit">Accept filter</button>
-  </form>
-  `;
-};
+  removeElement() {
+    this._element = null;
+  }
 
-export {getFilters};
+  getTemplate() {
+    return `
+      <div class="trip-filters__filter">
+        <input id="filter-${this._name}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${this._name}" ${this._isChecked ? `checked` : ``}>
+        <label class="trip-filters__filter-label" for="filter-${this._name}">${capitalize(this._name)}</label>
+      </div>
+    `.trim();
+  }
+
+}
+
+export {Filter};

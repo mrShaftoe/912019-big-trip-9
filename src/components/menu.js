@@ -1,18 +1,29 @@
-import {capitalize} from '../utils';
+import {capitalize, createElement} from '../utils';
 
-const getMenuItem = function ({name, isActive}) {
-  return `<a class="trip-tabs__btn  ${isActive ? `trip-tabs__btn--active` : ``}" href="#">
-    ${capitalize(name)}
-  </a>`;
-};
+class MenuItem {
+  constructor({name, isActive}) {
+    this._name = name;
+    this._isActive = isActive;
+    this._element = null;
+  }
 
-const getMenu = function (items) {
-  return `
-    <nav class="trip-controls__trip-tabs  trip-tabs">
-      ${items.map(getMenuItem).join(``)}
-    </nav>
-  `;
-};
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
 
-export {getMenu};
+  removeElement() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return `<a class="trip-tabs__btn  ${this._isActive ? `trip-tabs__btn--active` : ``}" href="#">
+    ${capitalize(this._name)}
+  </a>`.trim();
+  }
+}
+
+export {MenuItem};
 

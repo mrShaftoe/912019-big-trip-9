@@ -1,3 +1,9 @@
+const Position = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+  AFTEREND: `afterend`,
+};
+
 const getRandomInt = function (max, min = 0) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
@@ -76,6 +82,36 @@ const capitalize = function (string) {
   return `${string[0].toUpperCase()}${string.slice(1)}`;
 };
 
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
+
+const render = (container, element, place) => {
+  switch (place) {
+    case Position.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case Position.BEFOREEND:
+      container.append(element);
+      break;
+    case Position.AFTEREND:
+      container.insertAdjacentElement(Position.AFTEREND, element);
+  }
+};
+
+const unrender = (element) => {
+  if (element) {
+    element.remove();
+  }
+};
+
+const deleteElement = function (elem) {
+  unrender(elem.getElement());
+  elem.removeElement();
+};
+
 export {
   getRandomInt,
   getRandomFromArray,
@@ -88,5 +124,9 @@ export {
   getFormatedDateTime,
   getDatetimeTime,
   getEventDuration,
-  getTripCost
+  getTripCost,
+  createElement,
+  deleteElement,
+  render,
+  unrender
 };
