@@ -4,8 +4,11 @@ import {Filter} from './components/filters';
 import {Sorting} from "./components/tripsorting";
 import {EventsDay} from './components/eventsday';
 import {Event, EventEdit} from './components/event';
+import {TripTabs} from './components/triptabs';
+import {TripDays} from './components/tripdays';
+import {TripFilters} from './components/tripfilters';
 import {getEventData, getRouteData, getMenuData, getFiltersData, getSortingItems} from './components/data';
-import {groupEventsByDate, getTripCost, render, createElement} from './utils';
+import {groupEventsByDate, getTripCost, render} from './utils';
 
 const EVENTS_QUANTITY = 4;
 
@@ -72,16 +75,16 @@ tripCostField.innerText = getTripCost(events);
 
 renderRoute(getRouteData(events));
 
-render(menuContainer, createElement(`<nav class="trip-controls__trip-tabs  trip-tabs"></nav>`), `afterend`);
+render(menuContainer, new TripTabs().getElement(), `afterend`);
 getMenuData().forEach(renderMenuItem);
 
 render(
     filtersContainer,
-    createElement(`<form class="trip-filters" action="#" method="get"><button class="visually-hidden" type="submit">Accept filter</button></form>`),
+    new TripFilters().getElement(),
     `afterend`
 );
 getFiltersData().forEach(renderFilter);
 renderSorting(getSortingItems());
 
-render(tripEvents, createElement(`<ul class="trip-days"></ul>`), `beforeend`);
+render(tripEvents, new TripDays().getElement(), `beforeend`);
 Object.keys(eventsByDate).forEach((it) => renderDay(it, eventsByDate[it]));
