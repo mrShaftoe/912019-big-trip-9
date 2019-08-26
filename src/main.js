@@ -3,14 +3,14 @@ import {MenuItem} from './components/menu';
 import {Filter} from './components/filters';
 import {Sorting} from "./components/tripsorting";
 import {EventsDay} from './components/eventsday';
-import {Event, EventEdit} from './components/event';
+import {Event, EventEdit, FirstEvent} from './components/event';
 import {TripTabs} from './components/triptabs';
 import {TripDays} from './components/tripdays';
 import {TripFilters} from './components/tripfilters';
 import {getEventData, getRouteData, getMenuData, getFiltersData, getSortingItems} from './components/data';
 import {groupEventsByDate, getTripCost, render} from './utils';
 
-const EVENTS_QUANTITY = 4;
+const EVENTS_QUANTITY = 10;
 
 const events = Array.from({length: EVENTS_QUANTITY}, getEventData).sort((first, second) => first.startTime - second.startTime);
 const eventsByDate = groupEventsByDate(events);
@@ -49,13 +49,22 @@ const renderSorting = function (sortingMockup) {
 const renderEvent = function (eventMock, eventDayContainer) {
   const event = new Event(eventMock);
   const eventEdit = new EventEdit(eventMock);
+
   const openEventEdit = function () {
     eventDayContainer.replaceChild(eventEdit.getElement(), event.getElement());
+    document.addEventListener(`keydown`, onEscKeyPress);
   };
 
   const closeEventEdit = function (evt) {
     evt.preventDefault();
     eventDayContainer.replaceChild(event.getElement(), eventEdit.getElement());
+    document.removeEventListener(`keydown`, onEscKeyPress);
+  };
+
+  const onEscKeyPress = function (evt) {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      closeEventEdit(evt);
+    }
   };
 
   event.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, openEventEdit);
@@ -65,26 +74,33 @@ const renderEvent = function (eventMock, eventDayContainer) {
   render(eventDayContainer, event.getElement(), `beforeend`);
 };
 
+const renderFirstEvent = function () {
+  const firstEvent = new FirstEvent();
+  render(tripEvents, firstEvent.getElement(), `beforeend`);
+};
+
 const renderDay = function (dayMock, dayEvents) {
   const day = new EventsDay(dayMock);
   render(document.querySelector(`.trip-days`), day.getElement(), `beforeend`);
   dayEvents.forEach((it) => renderEvent(it, day.getElement().querySelector(`.trip-events__list`)), `beforeend`);
 };
 
-tripCostField.innerText = getTripCost(events);
-
-renderRoute(getRouteData(events));
-
 render(menuContainer, new TripTabs().getElement(), `afterend`);
 getMenuData().forEach(renderMenuItem);
-
 render(
     filtersContainer,
     new TripFilters().getElement(),
     `afterend`
 );
 getFiltersData().forEach(renderFilter);
-renderSorting(getSortingItems());
 
-render(tripEvents, new TripDays().getElement(), `beforeend`);
-Object.keys(eventsByDate).forEach((it) => renderDay(it, eventsByDate[it]));
+if (!events.length) {
+  renderFirstEvent();
+} else {
+  tripCostField.innerText = getTripCost(events);
+  renderRoute(getRouteData(events));
+  renderSorting(getSortingItems());
+
+  render(tripEvents, new TripDays().getElement(), `beforeend`);
+  Object.keys(eventsByDate).forEach((it) => renderDay(it, eventsByDate[it]));
+}

@@ -33,12 +33,12 @@ const getDestination = function (destination) {
   return `<option value="${destination}"></option>`;
 };
 
-const getTime = function (time, type) {
+const getTime = function (time, type, idx) {
   return `
-    <label class="visually-hidden" for="event-${type}-time-1">
+    <label class="visually-hidden" for="event-${type}-time-${idx}">
       ${TimeTypes[type].toUpperCase()}
     </label>
-    <input class="event__input  event__input--time" id="event-${type}-time-1" type="text" name="event-${type}-time" value="${getFormatedDateTime(time)}">
+    <input class="event__input  event__input--time" id="event-${type}-time-${idx}" type="text" name="event-${type}-time" value="${getFormatedDateTime(time)}">
   `;
 };
 
@@ -124,9 +124,9 @@ class EventEdit {
             </div>
 
             <div class="event__field-group  event__field-group--time">
-              ${getTime(this._startTime, `start`)}
+              ${getTime(this._startTime, `start`, this._idx)}
               &mdash;
-              ${getTime(this._endTime, `end`)}
+              ${getTime(this._endTime, `end`, this._idx)}
             </div>
 
             <div class="event__field-group  event__field-group--price">
@@ -239,5 +239,78 @@ class Event {
   }
 }
 
-export {Event, EventEdit};
+class FirstEvent {
+  constructor() {
+    this._startTime = Date.now();
+    this._endTime = Date.now();
+    this._idx = 0;
+    this._type = {
+      name: `flight`,
+      output: `to`,
+    };
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return `
+      <form class="trip-events__item  event  event--edit" action="#" method="post">
+        <header class="event__header">
+          <div class="event__type-wrapper">
+            <label class="event__type  event__type-btn" for="event-type-toggle-1">
+              <span class="visually-hidden">Choose event type</span>
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${this._type.name}.png" alt="Event type icon">
+            </label>
+            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+
+            <div class="event__type-list">
+              ${getEventTypeGroup(`Transfer`, TRANSFER_GROUP, this._type)}
+              ${getEventTypeGroup(`Activity`, ACTIVITY_GROUP, this._type)}
+            </div>
+          </div>
+
+          <div class="event__field-group  event__field-group--destination">
+            <label class="event__label  event__type-output" for="event-destination-0">
+              ${capitalize(this._type.name)} ${this._type.output}
+            </label>
+            <input class="event__input  event__input--destination" id="event-destination-0" type="text" name="event-destination" value="" list="destination-list-0">
+            <datalist id="destination-list-0">
+              ${DESTINATIONS.map(getDestination).join(``)}
+            </datalist>
+          </div>
+
+          <div class="event__field-group  event__field-group--time">
+              ${getTime(this._startTime, `start`, this._idx)}
+              &mdash;
+              ${getTime(this._endTime, `end`, this._idx)}
+          </div>
+
+          <div class="event__field-group  event__field-group--price">
+            <label class="event__label" for="event-price-${this._idx}">
+              <span class="visually-hidden">Price</span>
+              &euro;
+            </label>
+            <input class="event__input  event__input--price" id="event-price-${this._idx}" type="text" name="event-price" value="">
+          </div>
+
+          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+          <button class="event__reset-btn" type="reset">Cancel</button>
+        </header>
+      </form>
+    `.trim();
+  }
+}
+
+
+export {Event, EventEdit, FirstEvent};
 
