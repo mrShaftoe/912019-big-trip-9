@@ -1,21 +1,11 @@
-import {capitalize, createElement} from '../utils';
+import {capitalize} from '../utils';
+import {AbstractComponent} from './abstract-component';
 
-class MenuItem {
+class MenuItem extends AbstractComponent {
   constructor({name, isActive}) {
+    super();
     this._name = name;
     this._isActive = isActive;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {

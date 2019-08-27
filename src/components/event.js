@@ -1,6 +1,5 @@
-import {capitalize,
-  getFormatedDateTime, getFormatedTime, getDatetimeTime, getEventDuration,
-  createElement} from '../utils';
+import {capitalize, getFormatedDateTime, getFormatedTime, getDatetimeTime, getEventDuration} from '../utils';
+import {AbstractComponent} from './abstract-component';
 const TRANSFER_GROUP = [`bus`, `drive`, `flight`, `ship`, `taxi`, `train`, `transport`];
 const ACTIVITY_GROUP = [`check-in`, `restaurant`, `sightseeing`];
 const DESTINATIONS = [`Copenhagen`, `Helsinki`, `Prague`, `Stockholm`];
@@ -69,8 +68,9 @@ const getPhoto = function (photoSrc) {
   return `<img class="event__photo" src="${photoSrc}" alt="Event photo">`;
 };
 
-class EventEdit {
+class EventEdit extends AbstractComponent {
   constructor({type, destination, startTime, endTime, price, offers, description, photos}) {
+    super();
     this._type = type;
     this._destination = destination;
     this._startTime = startTime;
@@ -79,20 +79,8 @@ class EventEdit {
     this._offers = offers;
     this._description = description;
     this._photos = photos;
-    this._element = null;
     this._idx = eventNumber;
     eventNumber++;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {
@@ -180,26 +168,15 @@ class EventEdit {
   }
 }
 
-class Event {
+class Event extends AbstractComponent {
   constructor({type, destination, startTime, endTime, price, offers}) {
+    super();
     this._type = type;
     this._destination = destination;
     this._startTime = startTime;
     this._endTime = endTime;
     this._price = price;
     this._offers = offers;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {
@@ -239,8 +216,9 @@ class Event {
   }
 }
 
-class FirstEvent {
+class FirstEvent extends AbstractComponent {
   constructor() {
+    super();
     this._startTime = Date.now();
     this._endTime = Date.now();
     this._idx = 0;
@@ -248,18 +226,6 @@ class FirstEvent {
       name: `flight`,
       output: `to`,
     };
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {

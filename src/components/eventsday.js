@@ -1,20 +1,10 @@
-import {getFormatedDate, createElement} from '../utils';
+import {getFormatedDate} from '../utils';
+import {AbstractComponent} from './abstract-component';
 
-class EventsDay {
+class EventsDay extends AbstractComponent {
   constructor(date) {
+    super();
     this._date = Number(date);
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {

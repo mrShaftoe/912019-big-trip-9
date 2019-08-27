@@ -1,22 +1,11 @@
-import {createElement} from '../utils';
+import {AbstractComponent} from './abstract-component';
 
-class Route {
+class Route extends AbstractComponent {
   constructor({start, end, points}) {
+    super();
     this._start = start;
     this._end = end;
     this._points = points;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   getTemplate() {
