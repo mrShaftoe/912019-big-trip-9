@@ -20,9 +20,9 @@ class TripController {
       render(this._container, this._firstEvent.getElement(), `beforeend`);
       return;
     }
-    render(this._container, this._sort.getElement(), `beforeend`);
+    this._renderSort();
     render(this._container, this._days.getElement(), `beforeend`);
-    Object.keys(this._eventsByDate).forEach((it) => this._renderDay(it, this._eventsByDate[it]));
+    this._renderDays();
   }
 
   _renderEvent(eventMock, eventDayContainer) {
@@ -57,6 +57,37 @@ class TripController {
     const day = new EventsDay(dayMock);
     render(this._days.getElement(), day.getElement(), `beforeend`);
     dayEvents.forEach((it) => this._renderEvent(it, day.getElement().querySelector(`.trip-events__list`)), `beforeend`);
+  }
+
+  _renderSort() {
+    render(this._container, this._sort.getElement(), `beforeend`);
+    this._sort.getElement().addEventListener(`change`, (evt) => this._onSortFormChange(evt));
+  }
+
+  _renderDays() {
+    Object.keys(this._eventsByDate).forEach((it) => this._renderDay(it, this._eventsByDate[it]));
+  }
+  _onSortFormChange(evt) {
+    evt.preventDefault();
+    this._days.getElement().innerHTML = ``;
+
+    switch (evt.target.value.split(`-`)[1]) {
+      case `time`:
+        this._renderDay(
+            0,
+            this._events.slice().sort((b, a) => (a.endTime - a.startTime) - (b.endTime - b.startTime))
+        );
+        break;
+      case `price`:
+        this._renderDay(
+            0,
+            this._events.slice().sort((a, b) => a.price - b.price)
+        );
+        break;
+      case `event`:
+        this._renderDays();
+        break;
+    }
   }
 }
 
