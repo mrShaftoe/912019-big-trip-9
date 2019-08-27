@@ -9,7 +9,8 @@ const getSortItem = function ({name, isChecked}) {
     </div>
   `;
 };
-class Sorting extends AbstractComponent {
+
+class Sort extends AbstractComponent {
   constructor(sortOptions) {
     super();
     this._sortOptions = sortOptions;
@@ -26,4 +27,4 @@ class Sorting extends AbstractComponent {
   }
 }
 
-export {Sorting};
+export {Sort};

@@ -74,7 +74,7 @@ const OFFERS = [
   }
 ];
 
-const getSortingItems = function () {
+const getSortItems = function () {
   return [{
     name: `event`,
     isChecked: true,
@@ -156,4 +156,4 @@ const getFiltersData = function () {
   ];
 };
 
-export {getEventData, getRouteData, getMenuData, getFiltersData, getSortingItems};
+export {getEventData, getRouteData, getMenuData, getFiltersData, getSortItems};
